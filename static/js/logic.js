@@ -13,12 +13,12 @@ function createFeatures(earthquakeData) {
     return L.circleMarker(latlng);
 }
 function style(geoJsonFeature) {
-  console.log(geoJsonFeature);
+  //console.log(geoJsonFeature);
   return {
     radius: geoJsonFeature.properties.mag * 3,
-    opacity: .5,
+    opacity: 5,
     color: 'black',
-    weight: 1,
+    weight: 0.25,
     fillColor: getColor(geoJsonFeature.geometry.coordinates[2])
   }
 }
@@ -40,29 +40,10 @@ function getColor(d) {
          d > 50  ? '#fcc12a' :
          d > 30  ? '#fcea2a' :
          d > 10  ? '#b2fc2a' :
-         d > -10 ? '#2afc58':         
+         //d > -10 ? '#2afc58':         
                    '#6cfc2a';
 }
 
-// Build legend for earthquake depth
-var legend = L.control({position: 'bottomright'});
-legend.onAdd = function () {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [-10, 10, 30, 50, 70, 90],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grade[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-};
-
-legend.addTo(myMap);
 function createMap(earthquakes) {
   // Define streetmap and darkmap layers
   var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -87,10 +68,11 @@ function createMap(earthquakes) {
 legend.onAdd = function () {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [10, 30, 50, 70, 90],
+        grades = [-10, 10, 30, 50, 70, 90],
         labels = [];
         // colors = getColor;
     // loop through our density intervals and generate a label with a colored square for each interval
+    div.innerHTML = "<strong><h4>Earthquake <br> Depth  </h4></strong>"
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
             '<i style="background:' + getColor(grades[i]+1) + '"></i> ' +
